@@ -7,23 +7,25 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Input from '@material-ui/core/Input';
+import TextField from '@material-ui/core/TextField';
 
-const styles = {
+const styles = theme => ({
   card: {
-    minWidth: 275,
+    width: '50%',
+    margin: '2.5% auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '90%',
+    },
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  cardContent: {
+    width: '90%',
+    margin: '0 auto',
   },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-};
+  textField: {
+    marginRight: theme.spacing.unit,
+    width: '100%',
+  }
+});
 
 function SimpleCard(props) {
   const { classes } = props;
@@ -31,12 +33,14 @@ function SimpleCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardContent>
-        <Input
-            placeholder="Placeholder"
-            inputProps={{
-            'aria-label': 'Description',
-            }}
+      <CardContent className={classes.cardContent}>
+        <TextField
+          id="filled-multiline-flexible"
+          multiline
+          placeholder="What do you think?"
+          rowsMax="4"
+          className={classes.textField}
+          margin="normal"
         />
       </CardContent>
       <CardActions>
