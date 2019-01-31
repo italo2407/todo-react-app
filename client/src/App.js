@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import AddTodo from './components/AddTodo';
 import uuid from 'uuid';
 import TodoList from './components/TodoList';
+import api from './utils/api';
 
 class App extends Component {
   
@@ -19,24 +20,23 @@ class App extends Component {
     this.removeItem=this.removeItem.bind(this);
   }
 
+  componentDidMount(){
+    this.getItemsFromDB();
+  }
+
   addItem(inputValue){
-    debugger;
-    this.setState({
-      items:this.state.items.concat(
-        {
-          id:uuid(),
-          description:inputValue,
-          date:new Date(),
-          checked:false
-        }
-      )
-    })
+    const body={"description":inputValue};
+    api.feedbacks().create(body)
+      .then((res) => {
+        this.getItemsFromDB();
+      })
+      .catch((error) => console.log(error));
   }
 
   checkItem(id){
     debugger;
     var finalItems = this.state.items.map((item) => {
-      if(item.id === id){
+      if(item._id === id){
         item.checked =! item.checked
       } 
       return item
@@ -48,13 +48,25 @@ class App extends Component {
 
   removeItem(id){
     debugger;
-    var finalItems = this.state.items.filter((item) => {
-      if(item.id != id) return item
-    });
-    this.setState({
-      items: finalItems
-    });
+    api.feedbacks().delete(id)
+      .then((res) => {
+        this.getItemsFromDB();
+      })
+      .catch((error) => console.log(error));
   }
+
+  getItemsFromDB(){
+    api.feedbacks().getAll()
+      .then((res) => {
+        console.log(res);
+        res.data.forEach(element => {
+          element.checked=false;
+        });
+        this.setState({items:res.data});
+      })
+      .catch((error) => console.log(error));
+  }
+
 
   render() {
     return (

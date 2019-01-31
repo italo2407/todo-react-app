@@ -31,7 +31,7 @@ class AddTodo extends Component {
                 <Grid container>
                 <Grid xs={10} md={11} item style={{ paddingRight: 16 }}>
                     <TextField
-                    placeholder="Add Todo here"
+                    placeholder="Please, add your feedback here"
                     value={this.state.inputValue}
                     onChange={this.onInputChange}
                     fullWidth
